@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router"; // ১. ইমপোর্ট রাউটার কম্পোনেন্ট
-import HomePage from "./pages/home"; // ২. ইমপোর্ট হোম পেজ
+import { Routes, Route } from "react-router";
+import HomePage from "./pages/home";
+import AboutPage from "./pages/about";
+import Header from "./components/Header";
+import NotFound from "./pages/not-found";
+import CoinDetailsPage from "./pages/coin-details";
 
 const API_URL = import.meta.env.VITE_COINS_API_URL;
 
@@ -42,25 +46,34 @@ const App = () => {
 	}, [limit]);
 
 	return (
-		// ৩. রাউট সেটআপ
-		<Routes>
-			<Route
-				path="/"
-				element={
-					<HomePage
-						coins={coins}
-						filter={filter}
-						setFilter={setFilter}
-						limit={limit}
-						setLimit={setLimit}
-						sortBy={sortBy}
-						setSortBy={setSortBy}
-						loading={loading}
-						error={error}
-					/>
-				}
-			/>
-		</Routes>
+		<>
+			<Header />
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<HomePage
+							coins={coins}
+							filter={filter}
+							setFilter={setFilter}
+							limit={limit}
+							setLimit={setLimit}
+							sortBy={sortBy}
+							setSortBy={setSortBy}
+							loading={loading}
+							error={error}
+						/>
+					}
+				/>
+				<Route path="/about" element={<AboutPage />} />
+
+				{/* ডাইনামিক রাউট যোগ করা */}
+				<Route path="/coin/:id" element={<CoinDetailsPage />} />
+
+				{/* Not Found Route - এটি সবসময় সবার শেষে রাখবে */}
+				<Route path="*" element={<NotFound />} />
+			</Routes>
+		</>
 	);
 };
 
