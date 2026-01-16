@@ -1,5 +1,7 @@
 import { useParams, Link } from "react-router";
 import { useEffect, useState } from "react";
+import Spinner from "../components/Spinner";
+import CoinChart from "../components/CoinChart";
 
 const CoinDetailsPage = () => {
 	const { id } = useParams(); // URL থেকে id বের করা
@@ -14,7 +16,7 @@ const CoinDetailsPage = () => {
 		const fetchCoin = async () => {
 			try {
 				const res = await fetch(
-					`https://api.coingecko.com/api/v3/coins/${id}`
+					`https://api.coingecko.com/api/v3/coins/${id}`,
 				);
 				if (!res.ok) throw new Error("Failed to fetch coin data");
 				const data = await res.json();
@@ -29,8 +31,9 @@ const CoinDetailsPage = () => {
 		fetchCoin();
 	}, [id]); // <--- id পরিবর্তন হলে আবার ফেচ হবে
 
-	// রেন্ডারিং লজিক (আপাতত শুধু লোডিং/এরর চেক)
-	if (loading) return <p>Loading...</p>;
+	// if (loading) return <p>Loading...</p>; // এটি সরিয়ে ফেলো
+	if (loading) return <Spinner />;
+
 	if (error) return <p>Error: {error}</p>;
 
 	// কোড ক্লিন রাখার জন্য market_data আলাদা ভেরিয়েবলে নেওয়া হলো
@@ -113,6 +116,10 @@ const CoinDetailsPage = () => {
 				<h4>
 					Last Updated: {new Date(coin.last_updated).toLocaleString()}
 				</h4>
+			</div>
+
+			<div style={{ margin: "40px 0", height: "400px" }}>
+				<CoinChart coinId={id} />
 			</div>
 
 			{/* এক্সটার্নাল লিংকস */}

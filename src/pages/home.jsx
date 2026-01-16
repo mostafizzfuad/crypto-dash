@@ -2,6 +2,7 @@ import CoinCard from "../components/CoinCard";
 import LimitSelector from "../components/LimitSelector";
 import FilterInput from "../components/FilterInput";
 import SortSelector from "../components/SortSelector";
+import Spinner from "../components/Spinner";
 
 const HomePage = ({
 	coins,
@@ -19,7 +20,7 @@ const HomePage = ({
 		.filter(
 			(coin) =>
 				coin.name.toLowerCase().includes(filter.toLowerCase()) ||
-				coin.symbol.toLowerCase().includes(filter.toLowerCase())
+				coin.symbol.toLowerCase().includes(filter.toLowerCase()),
 		)
 		.slice() // 🔥 ১. অরিজিনাল অ্যারে কপি করা (Immutability)
 		.sort((a, b) => {
@@ -57,7 +58,8 @@ const HomePage = ({
 				<SortSelector sortBy={sortBy} onSortChange={setSortBy} />
 			</div>
 
-			{loading && <p className="text-center">Loading...</p>}
+			{/* {loading && <p className="text-center">Loading...</p>} */}
+			{loading && <Spinner color="white" />}
 			{error && <p className="text-center text-red-500">❌ {error}</p>}
 
 			{/* মেইন ডেটা গ্রিড (যদি লোডিং না থাকে এবং এরর না থাকে) */}
